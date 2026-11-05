@@ -55,7 +55,8 @@ class AppStrings {
 
   // Education Section
   static const String educationTitle = 'Education';
-  static const String educationSubtitle = 'Academic background & certifications';
+  static const String educationSubtitle =
+      'Academic background & certifications';
 
   // Courses Section
   static const String coursesTitle = 'Courses & Certifications';
@@ -84,7 +85,7 @@ class AppStrings {
 
   // Footer
   static const String footerText =
-      '© 2025 Osama El-Mulla. All rights reserved.';
+      '© 2026 Osama El-Mulla. All rights reserved.';
   static const String madeWith = 'Made with Flutter 💙';
 
   // Languages

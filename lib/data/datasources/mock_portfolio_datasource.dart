@@ -305,7 +305,7 @@ class MockPortfolioDatasource {
       EducationModel(
         degree: "Bachelor's Degree in Computer Science",
         institution: 'Faculty of Computers and Information, Tanta University',
-        year: '2021 - 2025',
+        year: '2022 - 2026',
         description:
             'Studied Computer Science with focus on software engineering, '
             'data structures, algorithms, and mobile application development. '

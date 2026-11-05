@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'dart:ui';
+
 import 'package:portfolio/core/theme/app_colors.dart';
 import 'package:portfolio/core/utils/responsive.dart';
 
@@ -149,9 +151,7 @@ class _NavBarState extends State<NavBar> {
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(24),
-            ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             border: Border.all(color: AppColors.grey800),
           ),
           child: Column(
@@ -179,8 +179,7 @@ class _NavBarState extends State<NavBar> {
                     widget.sections[index],
                     style: TextStyle(
                       color: isActive ? AppColors.primary : AppColors.white,
-                      fontWeight:
-                          isActive ? FontWeight.bold : FontWeight.w500,
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                       fontSize: 16,
                     ),
                   ),
@@ -250,8 +249,7 @@ class _NavLinkState extends State<_NavLink> {
                 widget.label,
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight:
-                      isHighlighted ? FontWeight.w600 : FontWeight.w500,
+                  fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.w500,
                   color: isHighlighted ? AppColors.primary : AppColors.grey400,
                   letterSpacing: 0.3,
                 ),
@@ -273,4 +271,3 @@ class _NavLinkState extends State<_NavLink> {
     );
   }
 }
-

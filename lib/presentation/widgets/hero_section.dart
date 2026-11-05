@@ -223,15 +223,9 @@ class _HeroSectionState extends State<HeroSection>
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
-          flex: 6,
-          child: _buildTextContent(),
-        ),
+        Expanded(flex: 6, child: _buildTextContent()),
         const SizedBox(width: 48),
-        Expanded(
-          flex: 5,
-          child: _buildAnimatedAvatarComposition(size: 340),
-        ),
+        Expanded(flex: 5, child: _buildAnimatedAvatarComposition(size: 340)),
       ],
     );
   }
@@ -357,11 +351,16 @@ class _HeroSectionState extends State<HeroSection>
             ),
             const SizedBox(width: 8),
             Container(height: 20, width: 1, color: AppColors.grey700),
-            const SizedBox(width: 8),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.location_on_outlined,
+              size: 20,
+              color: AppColors.grey400,
+            ),
             Text(
-              'Kafr Alzayat - Tanta',
+              'Tanta - Egypt',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 14,
                 color: AppColors.grey400,
                 fontWeight: FontWeight.w500,
               ),
@@ -404,9 +403,7 @@ class _HeroSectionState extends State<HeroSection>
           texts: const [
             'Junior Flutter Developer',
             'Clean Architecture & Bloc Specialist',
-            'Cross-Platform Mobile & Web Engineer',
-            'Firebase & Supabase Integrator',
-            'AI & Gemini Chatbot Developer',
+            'Cross-Platform Mobile Engineer',
           ],
           textStyle: TextStyle(
             fontSize: isMobile ? 18 : 24,
@@ -613,8 +610,8 @@ class _HeroSectionState extends State<HeroSection>
                   bottom: 25 + offset,
                   right: 10,
                   child: _FloatingPill(
-                    icon: Icons.auto_awesome_rounded,
-                    label: 'Gemini AI',
+                    icon: Icons.api_rounded,
+                    label: 'REST API',
                     color: AppColors.accentViolet,
                   ),
                 );
