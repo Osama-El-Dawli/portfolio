@@ -2,7 +2,7 @@ class AppStrings {
   AppStrings._();
 
   // App
-  static const String appTitle = 'Osama El-Mulla | Portfolio';
+  static const String appTitle = 'Osama Saeid | Portfolio';
   static const String appName = 'Portfolio';
 
   // Navigation
@@ -16,9 +16,9 @@ class AppStrings {
 
   // Hero Section
   static const String greeting = "Hello, I'm";
-  static const String name = 'Osama Saeid Ali El-Mulla';
+  static const String name = 'Osama Saeid';
   static const String firstName = 'Osama';
-  static const String lastName = 'El-Mulla';
+  static const String lastName = 'Saeid';
   static const String title = 'Junior Flutter Developer';
   static const String subtitle =
       'Building beautiful, performant mobile & web experiences';

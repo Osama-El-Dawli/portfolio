@@ -56,8 +56,9 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey _contactKey = GlobalKey();
 
   final ScrollController _scrollController = ScrollController();
-  int _activeNavIndex = 0;
+  int _activeNavIndex = -1;
   bool _showBackToTop = false;
+  bool _isAutoScrolling = false;
 
   final List<String> _navSections = const [
     'About',
@@ -99,56 +100,136 @@ class _HomePageState extends State<HomePage> {
 
   void _onScroll() {
     final offset = _scrollController.offset;
+
+    // Toggle Back to top button
     if (offset > 400 && !_showBackToTop) {
       setState(() => _showBackToTop = true);
     } else if (offset <= 400 && _showBackToTop) {
       setState(() => _showBackToTop = false);
     }
+
+    // Update active nav section only if user is manually scrolling
+    if (!_isAutoScrolling) {
+      _updateActiveSectionOnScroll();
+    }
   }
 
-  void _scrollToKey(GlobalKey key) {
+  void _updateActiveSectionOnScroll() {
+    if (!_scrollController.hasClients) return;
+
+    final scrollPosition = _scrollController.position;
+
+    // When at top (Hero section), no section link is active
+    if (_scrollController.offset < 200) {
+      if (_activeNavIndex != -1) {
+        setState(() => _activeNavIndex = -1);
+      }
+      return;
+    }
+
+    // When near bottom of the page, activate Contact (last section)
+    if (scrollPosition.extentAfter < 100) {
+      if (_activeNavIndex != _navSections.length - 1) {
+        setState(() => _activeNavIndex = _navSections.length - 1);
+      }
+      return;
+    }
+
+    // Sections corresponding to:
+    // ['About', 'Experience', 'Projects', 'Skills', 'Education', 'Contact']
+    final List<GlobalKey> sectionKeys = [
+      _aboutKey,
+      _experienceKey,
+      _projectsKey,
+      _skillsKey,
+      _educationKey,
+      _contactKey,
+    ];
+
+    int detectedIndex = -1;
+
+    for (int i = 0; i < sectionKeys.length; i++) {
+      final keyContext = sectionKeys[i].currentContext;
+      if (keyContext != null) {
+        final renderBox = keyContext.findRenderObject() as RenderBox?;
+        if (renderBox != null && renderBox.hasSize) {
+          final dy = renderBox.localToGlobal(Offset.zero).dy;
+          // Threshold: if section top reaches or is above 220px from top of viewport
+          if (dy <= 220) {
+            detectedIndex = i;
+          }
+        }
+      }
+    }
+
+    if (detectedIndex != _activeNavIndex) {
+      setState(() => _activeNavIndex = detectedIndex);
+    }
+  }
+
+  void _scrollToKey(GlobalKey key, int targetIndex) {
+    _isAutoScrolling = true;
+    setState(() => _activeNavIndex = targetIndex);
+
     final context = key.currentContext;
     if (context != null) {
       Scrollable.ensureVisible(
         context,
         duration: const Duration(milliseconds: 700),
         curve: Curves.easeInOutCubic,
-      );
+      ).then((_) {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            _isAutoScrolling = false;
+          }
+        });
+      });
+    } else {
+      _isAutoScrolling = false;
     }
   }
 
   void _onNavSectionTap(int index) {
-    setState(() => _activeNavIndex = index);
     switch (index) {
       case 0:
-        _scrollToKey(_aboutKey);
+        _scrollToKey(_aboutKey, 0);
         break;
       case 1:
-        _scrollToKey(_experienceKey);
+        _scrollToKey(_experienceKey, 1);
         break;
       case 2:
-        _scrollToKey(_projectsKey);
+        _scrollToKey(_projectsKey, 2);
         break;
       case 3:
-        _scrollToKey(_skillsKey);
+        _scrollToKey(_skillsKey, 3);
         break;
       case 4:
-        _scrollToKey(_educationKey);
+        _scrollToKey(_educationKey, 4);
         break;
       case 5:
-        _scrollToKey(_contactKey);
+        _scrollToKey(_contactKey, 5);
         break;
       default:
-        _scrollToKey(_heroKey);
+        _scrollToTop();
     }
   }
 
   void _scrollToTop() {
-    _scrollController.animateTo(
+    _isAutoScrolling = true;
+    setState(() => _activeNavIndex = -1);
+    _scrollController
+        .animateTo(
       0,
       duration: const Duration(milliseconds: 700),
       curve: Curves.easeInOutCubic,
-    );
+    )
+        .then((_) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) {
+          _isAutoScrolling = false;
+        }
+      });
+    });
   }
 
   @override
@@ -168,7 +249,7 @@ class _HomePageState extends State<HomePage> {
             controller: _scrollController,
             child: Column(
               children: [
-                // Top spacing so content doesn't hide behind fixed NavBar
+                // Top spacing so content starts below sticky fixed NavBar
                 const SizedBox(height: 72),
 
                 // Hero Section
@@ -176,8 +257,8 @@ class _HomePageState extends State<HomePage> {
                   key: _heroKey,
                   child: HeroSection(
                     profile: _profile,
-                    onViewProjects: () => _scrollToKey(_projectsKey),
-                    onContactMe: () => _scrollToKey(_contactKey),
+                    onViewProjects: () => _scrollToKey(_projectsKey, 2),
+                    onContactMe: () => _scrollToKey(_contactKey, 5),
                   ),
                 ),
 
@@ -231,14 +312,8 @@ class _HomePageState extends State<HomePage> {
             child: NavBar(
               sections: _navSections,
               activeIndex: _activeNavIndex,
-              onSectionTap: (index) {
-                if (index == 0 && _activeNavIndex == 0) {
-                  // If logo or first clicked
-                  _onNavSectionTap(index);
-                } else {
-                  _onNavSectionTap(index);
-                }
-              },
+              onSectionTap: _onNavSectionTap,
+              onLogoTap: _scrollToTop,
             ),
           ),
 
@@ -250,7 +325,7 @@ class _HomePageState extends State<HomePage> {
               child: FloatingActionButton.small(
                 onPressed: _scrollToTop,
                 backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.textPrimary,
+                foregroundColor: AppColors.background,
                 tooltip: 'Back to top',
                 child: const Icon(Icons.arrow_upward_rounded),
               ),
@@ -260,4 +335,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

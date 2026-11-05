@@ -32,7 +32,7 @@ class AppTheme {
         secondary: AppColors.secondary,
         surface: AppColors.surface,
         error: AppColors.error,
-        onPrimary: AppColors.textPrimary,
+        onPrimary: AppColors.background,
         onSecondary: AppColors.background,
         onSurface: AppColors.textPrimary,
         onError: AppColors.textPrimary,
@@ -283,7 +283,7 @@ class AppTheme {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: AppColors.background,
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         shape: RoundedRectangleBorder(

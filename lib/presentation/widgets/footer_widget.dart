@@ -59,7 +59,7 @@ class FooterWidget extends StatelessWidget {
 
   Widget _buildCopyright() {
     return Text(
-      '© 2025 Osama El-Mulla. All rights reserved.',
+      '© 2025 Osama Saeid. All rights reserved.',
       style: TextStyle(
         fontSize: 14,
         color: AppColors.grey500,

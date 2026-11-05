@@ -11,7 +11,7 @@ class MockPortfolioDatasource {
   // ---------------------------------------------------------------------------
   ProfileModel getProfile() {
     return const ProfileModel(
-      name: 'Osama Saeid Ali El-Mulla',
+      name: 'Osama Saeid',
       title: 'Junior Flutter Developer',
       email: 'osamasaeed283@gmail.com',
       phone: '01121823522',

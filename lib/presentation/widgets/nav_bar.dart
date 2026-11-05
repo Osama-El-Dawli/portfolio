@@ -7,12 +7,14 @@ class NavBar extends StatefulWidget {
   final List<String> sections;
   final int activeIndex;
   final ValueChanged<int> onSectionTap;
+  final VoidCallback? onLogoTap;
 
   const NavBar({
     super.key,
     required this.sections,
     required this.activeIndex,
     required this.onSectionTap,
+    this.onLogoTap,
   });
 
   @override
@@ -89,41 +91,50 @@ class _NavBarState extends State<NavBar> {
 
   Widget _buildLogo() {
     return GestureDetector(
-      onTap: () => widget.onSectionTap(0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.primary, AppColors.secondary],
+      onTap: () {
+        if (widget.onLogoTap != null) {
+          widget.onLogoTap!();
+        } else {
+          widget.onSectionTap(0);
+        }
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [AppColors.primary, AppColors.secondary],
+                ),
+                borderRadius: BorderRadius.circular(8),
               ),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Center(
-              child: Text(
-                'O',
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              child: const Center(
+                child: Text(
+                  'O',
+                  style: TextStyle(
+                    color: AppColors.background,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 20,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 12),
-          const Text(
-            'Osama El-Mulla',
-            style: TextStyle(
-              color: AppColors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              letterSpacing: 0.5,
+            const SizedBox(width: 12),
+            const Text(
+              'Osama Saeid',
+              style: TextStyle(
+                color: AppColors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
